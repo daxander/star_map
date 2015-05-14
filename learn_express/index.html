@@ -1,0 +1,87 @@
+
+<html>
+  <head>
+    <title>My first Three.js app</title>
+    <style>
+      body { margin: 0; }
+      canvas { width: 100%; height: 100% }
+    </style>
+  </head>
+  <body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+  
+  $(function() {
+    console.log("Sending request to server...")
+      $.ajax({
+        url: 'http://localhost:3000/index',
+        method: 'GET',
+        type: 'json',
+        success: function(data) {
+          console.log('working');
+          sphereMaker(data);
+        }
+      });
+    });
+   
+      
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+
+          // create a point light
+      var pointLight = new THREE.PointLight(0xFFFFFF);
+
+      // set its position
+      pointLight.position.x = 60;
+      pointLight.position.y = 50;
+      pointLight.position.z = 130;
+
+      // add to the scene
+      scene.add(pointLight);
+
+  camera.position.z = 5;
+
+  function sphereMaker(position) {
+    for(i=0; i<position.length; i++){
+      var x = position[i]['x']
+      var y = position[i]['y']
+      var z = position[i]['z']
+
+      var geometry = new THREE.SphereGeometry( .04513, 20, 20 );
+      //.00000004513 actual size (think about scaling up the distance to make them larger if there are canvas rendering issues????)
+      var material = new THREE.MeshPhongMaterial( );
+      THREE.ImageUtils.crossOrigin = '';
+      material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
+
+      var sphere = new THREE.Mesh( geometry, material );
+      sphere.position.set(x, y, z);
+
+      scene.add( sphere );
+    }
+    render();
+  }
+
+  
+
+
+  function render() {
+  requestAnimationFrame( render );
+
+  // pointLight.position.x += -.4;
+  // pointLight.position.y += -.4;
+  // pointLight.position.z += ;
+
+  renderer.render( scene, camera );
+  }
+
+  </script>
+
+  <p>hello, I'm workign</p>
+ 
+  </body>
+</html>
