@@ -46,15 +46,33 @@ scene.add(pointLight);
   material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
 
   var sphere = new THREE.Mesh( geometry, material );
+  sphere.position.set(0, 0, 0);
+
   scene.add( sphere );
- 
-  camera.position.z = 5;
+  
+  // Sphere parameters: radius, segments along width, segments along height
+  var sphereGeometry = new THREE.SphereGeometry( 2, 20, 20 ); 
+  // use a "lambert" material rather than "basic" for realistic lighting.
+  //   (don't forget to add (at least one) light!)
+  var new_sphere = new THREE.Mesh(sphereGeometry, material);
+  new_sphere.position.set(-5, 0, 0);
+  scene.add(new_sphere);
+
+
+  camera.position.z = 10;
   
   function render() {
   requestAnimationFrame( render );
 
+  pointLight.position.x += 1;
+  pointLight.position.y += -1;
+  // pointLight.position.z += 1;
+
+    new_sphere.rotation.x = (23.5/180)*Math.PI;
+    new_sphere.rotation.y = Date.now() * 0.0001;
+
     sphere.rotation.x = (23.5/180)*Math.PI;
-    sphere.rotation.y = Date.now() * 0.001;
+    sphere.rotation.y = Date.now() * 0.0001;
 
   renderer.render( scene, camera );
   }
