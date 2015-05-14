@@ -9,74 +9,60 @@
   <body>
     <script src="js/three.min.js"></script>
     <script>
-      // Our Javascript will go here.
-
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-
-    // create a point light
-var pointLight =
-  new THREE.PointLight(0xFFFFFF);
-
-// set its position
-pointLight.position.x = 60;
-pointLight.position.y = 50;
-pointLight.position.z = 130;
-
-// add to the scene
-scene.add(pointLight);
-
-  // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-  // var cube = new THREE.Mesh( geometry, material );
-  // scene.add( cube );
-  // var myImage = new Image();
-
-  // myImage.src = "//i.imgur.com/ADBTaLw.jpg";
-  // var mapOverlay = new THREE.ImageUtils.loadTexture(myImage.src);
-
-
-  var geometry = new THREE.SphereGeometry( 2, 20, 20 );
-  var material = new THREE.MeshPhongMaterial( );
-  THREE.ImageUtils.crossOrigin = '';
-  material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
-
-  var sphere = new THREE.Mesh( geometry, material );
-  sphere.position.set(0, 0, 0);
-
-  scene.add( sphere );
   
-  // Sphere parameters: radius, segments along width, segments along height
-  var sphereGeometry = new THREE.SphereGeometry( 2, 20, 20 ); 
-  // use a "lambert" material rather than "basic" for realistic lighting.
-  //   (don't forget to add (at least one) light!)
-  var new_sphere = new THREE.Mesh(sphereGeometry, material);
-  new_sphere.position.set(-5, 0, 0);
-  scene.add(new_sphere);
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
 
-  camera.position.z = 10;
+          // create a point light
+      var pointLight = new THREE.PointLight(0xFFFFFF);
+
+      // set its position
+      pointLight.position.x = 60;
+      pointLight.position.y = 50;
+      pointLight.position.z = 130;
+
+      // add to the scene
+      scene.add(pointLight);
+
+  camera.position.z = 15;
+
+  function sphereMaker(position) {
+    var position = [{'x': 1, 'y': 3, 'z': 0}, {'x': -1, 'y': 2, 'z': 0}, {'x': 6, 'y': 0, 'z': 0} , {'x': 2, 'y': 7, 'z': 0}, {'x': -6, 'y': 4, 'z': 0}, {'x': -3, 'y': 2, 'z': 6}, {'x': 4, 'y': -3, 'z': -2}, {'x': -3, 'y': -3, 'z': 0}, {'x': -4, 'y': 4, 'z': -6}, {'x': 3, 'y': -5, 'z': 5}, {'x': 8, 'y': -5, 'z': 5}, {'x': -9, 'y': -3, 'z': 3}];
+    for(i=0; i<position.length; i++){
+      var x = position[i]['x']
+      var y = position[i]['y']
+      var z = position[i]['z']
+
+      var geometry = new THREE.SphereGeometry( .5, 20, 20 );
+      var material = new THREE.MeshPhongMaterial( );
+      THREE.ImageUtils.crossOrigin = '';
+      material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
+
+      var sphere = new THREE.Mesh( geometry, material );
+      sphere.position.set(x, y, z);
+
+      scene.add( sphere );
+    }
+    render();
+  }
+  sphereMaker();
   
+
+
   function render() {
   requestAnimationFrame( render );
 
-  pointLight.position.x += 1;
-  pointLight.position.y += -1;
-  // pointLight.position.z += 1;
+  pointLight.position.x += -.4;
+  pointLight.position.y += -.4;
+  // pointLight.position.z += ;
 
-    new_sphere.rotation.x = (23.5/180)*Math.PI;
-    new_sphere.rotation.y = Date.now() * 0.0001;
-
-    sphere.rotation.x = (23.5/180)*Math.PI;
-    sphere.rotation.y = Date.now() * 0.0001;
 
   renderer.render( scene, camera );
   }
-  render();
 
 
 
