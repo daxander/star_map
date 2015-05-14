@@ -34,12 +34,20 @@ scene.add(pointLight);
   // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
   // var cube = new THREE.Mesh( geometry, material );
   // scene.add( cube );
+  // var myImage = new Image();
+
+  // myImage.src = "//i.imgur.com/ADBTaLw.jpg";
+  // var mapOverlay = new THREE.ImageUtils.loadTexture(myImage.src);
+
 
   var geometry = new THREE.SphereGeometry( 2, 20, 20 );
-  var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+  var material = new THREE.MeshPhongMaterial( );
+  THREE.ImageUtils.crossOrigin = '';
+  material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
+
   var sphere = new THREE.Mesh( geometry, material );
   scene.add( sphere );
-
+ 
   camera.position.z = 5;
   
   function render() {
