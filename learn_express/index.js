@@ -5,6 +5,7 @@ var path = require('path');
 var request = require('request');
 // var io = require('socket.io')(http);
 
+app.use('/public', express.static('public'));
 
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname,"/index.html"), function(err){

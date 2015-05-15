@@ -8,11 +8,12 @@
     </style>
   </head>
   <body>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://dl.dropboxusercontent.com/u/3587259/Code/Threejs/OrbitControls.js"></script>
   <script>
-  
+  // ajax call 
   $(function() {
     console.log("Sending request to server...")
       $.ajax({
@@ -26,7 +27,7 @@
       });
     });
    
-      
+      // set scene 
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -34,7 +35,7 @@
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.body.appendChild( renderer.domElement );
 
-          // create a point light
+      // create a point light
       var pointLight = new THREE.PointLight(0xFFFFFF);
 
       // set its position
@@ -60,7 +61,7 @@
       //.00000004513 actual size (think about scaling up the distance to make them larger if there are canvas rendering issues????)
       var material = new THREE.MeshPhongMaterial( );
       THREE.ImageUtils.crossOrigin = '';
-      material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
+      material.map  = THREE.ImageUtils.loadTexture('/public/sunFinal.jpg');
 
       var sphere = new THREE.Mesh( geometry, material );
       sphere.position.set(x, y, z);
