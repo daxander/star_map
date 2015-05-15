@@ -10,6 +10,7 @@
   <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://dl.dropboxusercontent.com/u/3587259/Code/Threejs/OrbitControls.js"></script>
   <script>
   
   $(function() {
@@ -44,6 +45,9 @@
       // add to the scene
       scene.add(pointLight);
 
+      //controls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+
   camera.position.z = 5;
 
   function sphereMaker(position) {
@@ -64,6 +68,7 @@
       scene.add( sphere );
     }
     render();
+    controls.update();
   }
 
   
