@@ -20,31 +20,85 @@
         type: 'json',
         success: function(data) {
           console.log('working');
+          lightMaker(data);
           sphereMaker(data);
         }
       });
     });
+  document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+  projector = new THREE.Projector();
+   var container, scene, camera, renderer, controls, stats;
+   var clock = new THREE.Clock();
+   var targetList = [];
+   var projector, mouse = { x: 0, y: 0 };
+
+  function onDocumentMouseDown( event ) 
+{
+  // the following line would stop any other event handler from firing
+  // (such as the mouse's TrackballControls)
+  event.preventDefault();
+  
+  console.log("Click.");
+  
+  // update the mouse variable
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  
+
+  // create a Ray with origin at the mouse position
+  //   and direction into the scene (camera direction)
+   var vector = new THREE.Vector3(
+        ( event.clientX / window.innerWidth ) * 2 - 1,
+      - ( event.clientY / window.innerHeight ) * 2 + 1,
+        0.5
+    );
+  projector.unprojectVector( vector, camera );
+  var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+  // create an array containing all objects in the scene with which the ray intersects
+  var intersects = ray.intersectObjects( targetList );
+  
+  // if there is one (or more) intersections
+  if ( intersects.length > 0 )
+  {
+    intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+  }
+
+}
+
    
-      
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-      var renderer = new THREE.WebGLRenderer();
-      renderer.setSize( window.innerWidth, window.innerHeight );
-      document.body.appendChild( renderer.domElement );
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
 
-          // create a point light
+  camera.position.z = .5;
+
+   function lightMaker(position) {
+    //add 100 lights into screen
+     for(i=0; i<100; i++){
+      var lightx = position[i]['x']
+      var lighty = position[i]['y']
+      var lightz = position[i]['z']
+
+      // create a point light
       var pointLight = new THREE.PointLight(0xFFFFFF);
 
       // set its position
-      pointLight.position.x = 60;
-      pointLight.position.y = 50;
-      pointLight.position.z = 130;
+      pointLight.position.x = lightx;
+      pointLight.position.y = lighty;
+      pointLight.position.z = lightz;
+      pointLight.intensity = 0.5;
+      pointLight.distance = 6
 
       // add to the scene
       scene.add(pointLight);
 
-  camera.position.z = 5;
+     }
+  }
 
   function sphereMaker(position) {
     for(i=0; i<position.length; i++){
@@ -54,7 +108,7 @@
 
       var geometry = new THREE.SphereGeometry( .04513, 20, 20 );
       //.00000004513 actual size (think about scaling up the distance to make them larger if there are canvas rendering issues????)
-      var material = new THREE.MeshPhongMaterial( );
+      var material = new THREE.MeshBasicMaterial( );
       THREE.ImageUtils.crossOrigin = '';
       material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
 
@@ -62,6 +116,7 @@
       sphere.position.set(x, y, z);
 
       scene.add( sphere );
+      targetList.push(sphere);
     }
     render();
   }
@@ -71,17 +126,9 @@
 
   function render() {
   requestAnimationFrame( render );
-
-  // pointLight.position.x += -.4;
-  // pointLight.position.y += -.4;
-  // pointLight.position.z += ;
-
   renderer.render( scene, camera );
   }
 
   </script>
-
-  <p>hello, I'm workign</p>
- 
   </body>
 </html>
