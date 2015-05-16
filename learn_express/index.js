@@ -17,7 +17,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/index', function(req, res){
-  res.status(200).send(position)
+  res.status(200).send(stats)
   res.end()
 });
 
