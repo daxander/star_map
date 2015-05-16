@@ -107,11 +107,15 @@
      }
   }
 
-  function sphereMaker(position) {
-    for(i=0; i<position.length; i++){
-      var x = position[i]['x']
-      var y = position[i]['y']
-      var z = position[i]['z']
+  function sphereMaker(stats) {
+    for(i=0; i<stats.length; i++){
+      var x = stats[i]['x']
+      var y = stats[i]['y']
+      var z = stats[i]['z']
+      var name = stats[i]['name']
+      var color = stats[i]['color'] 
+      var distance = stats[i]['distance'] 
+      var luminosity = stats[i]['luminosity']
 
       var geometry = new THREE.SphereGeometry( .04513, 20, 20 );
       //.00000004513 actual size (think about scaling up the distance to make them larger if there are canvas rendering issues????)
