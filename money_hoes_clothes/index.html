@@ -30,13 +30,13 @@
             }
           });
         });
-   
+      
       var clock = new THREE.Clock();
 
       // set scene 
       var scene = new THREE.Scene();
 
-      var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.2, 1000 );
+      var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.2, 20 );
 
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth, window.innerHeight );
@@ -59,9 +59,11 @@
       //   flyControls.dragToLook = false;
       // // end controls
       var camControls = new THREE.FirstPersonControls(camera);
-        camControls.lookSpeed = 0.4;
-        camControls.movementSpeed = 20;
+        camControls.lookSpeed = 0.1;
+        camControls.movementSpeed = 5;
         camControls.noFly = true;
+        camControls.noZoom = true;
+        camControls.autoForward = false;
         camControls.lookVertical = true;
         camControls.constrainVertical = true;
         camControls.verticalMin = 1.0;
@@ -73,17 +75,15 @@
       // $("#WebGL-output").append(webGLRenderer.domElement);
 
       // create a point light
-      var pointLight = new THREE.PointLight(0xFFFFFF);
+      // var pointLight = new THREE.PointLight(0xFFFFFF);
 
-      // set its position
-      pointLight.position.x = 60;
-      pointLight.position.y = 50;
-      pointLight.position.z = 130;
+      // // set its position
+      // pointLight.position.x = 60;
+      // pointLight.position.y = 50;
+      // pointLight.position.z = 130;
 
       // add to the scene
       scene.add(pointLight);
-
-      // camera position z-index
 
     // builds sphere (clearly)
     function sphereMaker(position) {
