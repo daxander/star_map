@@ -8,59 +8,75 @@
   </head>
   <body>
     <script src="js/three.min.js"></script>
-    <script>
+    <!-- Custom Shader Code  -->
+    <script id="vertexShader" type="x-shader/x-vertex">
+      varying vec3 vNormal;
+      void main() 
+      {
+        vNormal = normalize( normalMatrix * normal );
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+      </script>
+      <!-- ################# -->
+      <!-- fragment shader a.k.a. pixel shader -->
+      <script id="fragmentShader" type="x-shader/x-vertex"> 
+      varying vec3 vNormal;
+      void main() 
+      {
+        float intensity = pow( 0.7 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), 4.0 ); 
+        gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * intensity;
+      }
+      </script>
+      <!-- ################# -->
+
+      <script>
       // Our Javascript will go here.
+      
+      function init() 
+      {
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
 
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
+        // create a point light
+        var pointLight =
+        new THREE.PointLight(0xFFFFFF);
 
-    // create a point light
-var pointLight =
-  new THREE.PointLight(0xFFFFFF);
+        // set its position
+        pointLight.position.x = 60;
+        pointLight.position.y = 50;
+        pointLight.position.z = 130;
 
-// set its position
-pointLight.position.x = 60;
-pointLight.position.y = 50;
-pointLight.position.z = 130;
-
-// add to the scene
-scene.add(pointLight);
-
-  // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-  // var cube = new THREE.Mesh( geometry, material );
-  // scene.add( cube );
-  // var myImage = new Image();
-
-  // myImage.src = "//i.imgur.com/ADBTaLw.jpg";
-  // var mapOverlay = new THREE.ImageUtils.loadTexture(myImage.src);
+        // add to the scene
+        scene.add(pointLight);
+        var geometry = new THREE.SphereGeometry( 2, 20, 20 );
+        var material = new THREE.MeshPhongMaterial( );
 
 
-  var geometry = new THREE.SphereGeometry( 2, 20, 20 );
-  var material = new THREE.MeshPhongMaterial( );
-  THREE.ImageUtils.crossOrigin = '';
-  material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
+        THREE.ImageUtils.crossOrigin = '';
+        material.map  = THREE.ImageUtils.loadTexture('http://i.imgur.com/X2umI9r.jpg');
 
-  var sphere = new THREE.Mesh( geometry, material );
-  scene.add( sphere );
- 
-  camera.position.z = 5;
-  
-  function render() {
-  requestAnimationFrame( render );
+        var sphere = new THREE.Mesh( geometry, material );
+        scene.add( sphere );
 
-    sphere.rotation.x = (23.5/180)*Math.PI;
-    sphere.rotation.y = Date.now() * 0.001;
+       
+        camera.position.z = 5;
 
-  renderer.render( scene, camera );
-  }
-  render();
+        function render() {
+        requestAnimationFrame( render );
 
+          sphere.rotation.x = (23.5/180)*Math.PI;
+          sphere.rotation.y = Date.now() * 0.001;
 
+        renderer.render( scene, camera );
+        }
+
+        render();
+      } //init() close
+      init();
 
     </script>
   </body>
